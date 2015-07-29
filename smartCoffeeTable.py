@@ -145,11 +145,14 @@ def getCalendar(eventNum):
         track += 1
     return calMatrix
 
-def getNews():
-    d = feedparser.parse('http://rss.nytimes.com/services/xml/rss/nyt/World.xml')
-    print "Recent News:\n"
-    for x in range(0, 5):
-        print d.entries[x].title + " by " + d.entries[x].author + "\n"
-        # print d.entries[x].description + "\n"
+newsNum = 5
+# first entry is title, second is author(s)
+def getNews(newsNum):
 
-getNews()
+    newsMatrix = [[0 for x in range(2)] for x in range(newsNum)]
+    d = feedparser.parse('http://rss.nytimes.com/services/xml/rss/nyt/World.xml')
+    for x in range(0, newsNum):
+        newsMatrix[x][0] = d.entries[x].title
+        newsMatrix[x][1] = d.entries[x].author
+        return newsMatrix
+        # print d.entries[x].description + "\n"
