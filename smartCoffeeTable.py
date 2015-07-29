@@ -40,9 +40,11 @@ def getMail(emailNum):
         Matrix[x][4] = body
         #print email_message.items()  # print all headers
 
-    for x in range(0, (emailNum)):
+    x = emailNum - 1
+    while x > -1:
         for y in range(0, 5):
             print Matrix[x][y]
+        x -= 1
 
 getMail(emailNum)
 
