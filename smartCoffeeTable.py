@@ -27,8 +27,8 @@ def getMail(emailNum):
         email_message = email.message_from_string(raw_email)
 
         Matrix[x][0] = email_message['Date']
-        Matrix[x][1] = email_message['To']
-        Matrix[x][2] = email_message['From']
+        Matrix[x][1] = 'To: ' + email_message['To']
+        Matrix[x][2] = 'From: ' + email_message['From']
         Matrix[x][3] = email_message['Subject']
         body = ""
         for part in email_message.walk():
