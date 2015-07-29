@@ -3,6 +3,20 @@ import email
 import pywapi
 import pprint
 import string
+import httplib2
+import os
+from apiclient import discovery
+import oauth2client
+from oauth2client import client
+from oauth2client import tools
+import datetime
+import feedparser
+
+try:
+    import argparse
+    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
+except ImportError:
+    flags = None
 
 # email
 
@@ -42,22 +56,16 @@ def getMail(emailNum):
 
     return Matrix
 
-'''
-    x = emailNum - 1
-    while x > -1:
-        for y in range(0, 5):
-            print Matrix[x][y]
-        x -= 1
-'''
 
 
 def convertToF(celcius):
-    return ((celcius*9)/5) + 32
+    return str(((int(celcius)*9)/5) + 32)
 
 def getWeather(zipcode):
     pp = pprint.PrettyPrinter(indent=4)
 
     weather_com_result = pywapi.get_weather_from_weather_com(zipcode)
+
 
     #print "According to weather.com, it is currently " + string.lower(weather_com_result['current_conditions']['text']) + " and " + str(convertToF(int(weather_com_result['current_conditions']['temperature']))) + " F.\n"
 
@@ -65,5 +73,86 @@ def getWeather(zipcode):
 
 
 
+
+
+    print "Weather Report:"
+    print "Currently: " + weather_com_result['current_conditions']['text'] + " and " + convertToF(weather_com_result['current_conditions']['temperature']) + "F.\n"
+    print "Today's high will be " + convertToF((weather_com_result['forecasts'][0]['high'])) + "F.\n"
+    print "Tomorrow's forecast: " + weather_com_result['forecasts'][1]['day']['text'] + ", high " + convertToF((weather_com_result['forecasts'][1]['high'])) + "F.\n"
+
+
 getMail(emailNum)
 getWeather(zipcode)
+
+SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+CLIENT_SECRET_FILE = 'client_secret.json'
+APPLICATION_NAME = 'Google Calendar API Quickstart'
+
+def get_credentials():
+    """Gets valid user credentials from storage.
+
+    If nothing has been stored, or if the stored credentials are invalid,
+    the OAuth2 flow is completed to obtain the new credentials.
+
+    Returns:
+        Credentials, the obtained credential.
+    """
+    home_dir = os.path.expanduser('~')
+    credential_dir = os.path.join(home_dir, '.credentials')
+    if not os.path.exists(credential_dir):
+        os.makedirs(credential_dir)
+    credential_path = os.path.join(credential_dir,
+                                   'calendar-quickstart.json')
+
+    store = oauth2client.file.Storage(credential_path)
+    credentials = store.get()
+    if not credentials or credentials.invalid:
+        flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
+        flow.user_agent = APPLICATION_NAME
+        if flags:
+            credentials = tools.run_flow(flow, store, flags)
+        else:  # Needed only for compatability with Python 2.6
+            credentials = tools.run(flow, store)
+        print 'Storing credentials to ' + credential_path
+    return credentials
+
+
+def getCalendar():
+    """Shows basic usage of the Google Calendar API.
+
+    Creates a Google Calendar API service object and outputs a list of the next
+    10 events on the user's calendar.
+    """
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service = discovery.build('calendar', 'v3', http=http)
+
+    now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+    print 'Upcoming events:'
+    eventsResult = service.events().list(
+        calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
+        orderBy='startTime').execute()
+    events = eventsResult.get('items', [])
+
+    if not events:
+        print 'No upcoming events found.'
+    for event in events:
+        start = event['start'].get('dateTime', event['start'].get('date'))
+        print start, event['summary']
+    print "\n"
+
+
+
+getCalendar()
+
+
+
+
+def getNews():
+    d = feedparser.parse('http://rss.nytimes.com/services/xml/rss/nyt/World.xml')
+    print "Recent News:\n"
+    for x in range(0, 5):
+        print d.entries[x].title + " by " + d.entries[x].author + "\n"
+        # print d.entries[x].description + "\n"
+
+getNews()
