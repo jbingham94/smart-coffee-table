@@ -26,6 +26,4 @@ Testing Methodology:
 	Once the display is functioning properly as a stand alone application, we will connect the buttons for the raspberry by to get dimming/activiating functionality. 
 
 
-How to set up the Google Calendar API:
-    With pip installed, run the following line in Terminal:
-    sudo pip install -I google-api-python-client==1.3.2
+
