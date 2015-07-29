@@ -10,6 +10,7 @@ import oauth2client
 from oauth2client import client
 from oauth2client import tools
 import datetime
+import feedparser
 
 try:
     import argparse
@@ -130,5 +131,15 @@ def getCalendar():
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
         print start, event['summary']
+    print "\n"
 
 getCalendar()
+
+def getNews():
+    d = feedparser.parse('http://rss.nytimes.com/services/xml/rss/nyt/World.xml')
+    print "Recent News:\n"
+    for x in range(0, 5):
+        print d.entries[x].title + " by " + d.entries[x].author + "\n"
+        # print d.entries[x].description + "\n"
+
+getNews()
