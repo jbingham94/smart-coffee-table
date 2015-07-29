@@ -62,15 +62,16 @@ def getMail(emailNum):
 getMail(emailNum)
 
 def convertToF(celcius):
-    return ((celcius*9)/5) + 32
+    return str(((int(celcius)*9)/5) + 32)
 
 def getWeather(zipcode):
     pp = pprint.PrettyPrinter(indent=4)
 
     weather_com_result = pywapi.get_weather_from_weather_com(zipcode)
 
-    print "According to weather.com, it is currently " + string.lower(weather_com_result['current_conditions']['text']) + " and " + str(convertToF(int(weather_com_result['current_conditions']['temperature']))) + "F.\n"
-
+    print "Currently " + string.lower(weather_com_result['current_conditions']['text']) + " and " + convertToF(weather_com_result['current_conditions']['temperature']) + "F.\n"
+    print "Today's high will be " + convertToF((weather_com_result['forecasts'][0]['high'])) + "F.\n"
+    print "Tomorrow's forecast: " + string.lower(weather_com_result['forecasts'][1]['day']['text']) + ", high " + convertToF((weather_com_result['forecasts'][1]['high'])) + "F.\n"
 getWeather(zipcode)
 
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
