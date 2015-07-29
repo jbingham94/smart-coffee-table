@@ -11,7 +11,7 @@ mail.login('smartcoffee6@gmail.com', 'iluvcs69yo')
 mail.list()
 # Out: list of "folders" aka labels in gmail.
 mail.select("inbox")  # connect to inbox.
-print "Your most recent emails:" + '\n'
+#print "Your most recent emails:" + '\n'
 
 emailNum = 5
 zipcode = '03755'
@@ -40,13 +40,16 @@ def getMail(emailNum):
         Matrix[x][4] = body
         #print email_message.items()  # print all headers
 
+    return Matrix
+
+'''
     x = emailNum - 1
     while x > -1:
         for y in range(0, 5):
             print Matrix[x][y]
         x -= 1
+'''
 
-getMail(emailNum)
 
 def convertToF(celcius):
     return ((celcius*9)/5) + 32
@@ -56,6 +59,11 @@ def getWeather(zipcode):
 
     weather_com_result = pywapi.get_weather_from_weather_com(zipcode)
 
-    print "According to weather.com, it is currently " + string.lower(weather_com_result['current_conditions']['text']) + " and " + str(convertToF(int(weather_com_result['current_conditions']['temperature']))) + "F.\n"
+    #print "According to weather.com, it is currently " + string.lower(weather_com_result['current_conditions']['text']) + " and " + str(convertToF(int(weather_com_result['current_conditions']['temperature']))) + " F.\n"
 
+    return "According to weather.com, it is currently " + string.lower(weather_com_result['current_conditions']['text']) + " and " + str(convertToF(int(weather_com_result['current_conditions']['temperature']))) + " F.\n"
+
+
+
+getMail(emailNum)
 getWeather(zipcode)
