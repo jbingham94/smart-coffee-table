@@ -48,11 +48,14 @@ def getMail(emailNum):
 
 getMail(emailNum)
 
+def convertToF(celcius):
+    return ((celcius*9)/5) + 32
+
 def getWeather(zipcode):
     pp = pprint.PrettyPrinter(indent=4)
 
     weather_com_result = pywapi.get_weather_from_weather_com(zipcode)
 
-    print "According to weather.com, it is currently " + string.lower(weather_com_result['current_conditions']['text']) + " and " + weather_com_result['current_conditions']['temperature'] + "C.\n"
+    print "According to weather.com, it is currently " + string.lower(weather_com_result['current_conditions']['text']) + " and " + str(convertToF(int(weather_com_result['current_conditions']['temperature']))) + "F.\n"
 
 getWeather(zipcode)
