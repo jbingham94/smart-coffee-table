@@ -31,7 +31,7 @@ emailNum = 5
 zipcode = '03755'
 def getMail(emailNum):
 
-    Matrix = [[0 for x in range(5)] for x in range(emailNum)]
+    mailMatrix = [[0 for x in range(5)] for x in range(emailNum)]
 
     for x in range(-1, (emailNum-1)):  # will expand range later - second number = number of emails to display minus 1
         result, data = mail.uid('search', None, "ALL")  # search and return uids instead
@@ -40,10 +40,10 @@ def getMail(emailNum):
         raw_email = data[0][1]
         email_message = email.message_from_string(raw_email)
 
-        Matrix[x][0] = email_message['Date']
-        Matrix[x][1] = 'To: ' + email_message['To']
-        Matrix[x][2] = 'From: ' + email_message['From']
-        Matrix[x][3] = email_message['Subject']
+        mailMatrix[x][0] = email_message['Date']
+        mailMatrix[x][1] = 'To: ' + email_message['To']
+        mailMatrix[x][2] = 'From: ' + email_message['From']
+        mailMatrix[x][3] = email_message['Subject']
         body = ""
         for part in email_message.walk():
         # each part is a either non-multipart, or another multipart message
@@ -51,12 +51,10 @@ def getMail(emailNum):
             if part.get_content_type() == 'text/plain':
                 body = body + part.get_payload()  # prints the raw text
 
-        Matrix[x][4] = body
+        mailMatrix[x][4] = body
         #print email_message.items()  # print all headers
 
-    return Matrix
-
-
+    return mailMatrix
 
 def convertToF(celcius):
     return str(((int(celcius)*9)/5) + 32)
@@ -116,13 +114,17 @@ def get_credentials():
         print 'Storing credentials to ' + credential_path
     return credentials
 
+eventNum = 5
+# first entry is time, second is event title
+def getCalendar(eventNum):
 
-def getCalendar():
     """Shows basic usage of the Google Calendar API.
 
     Creates a Google Calendar API service object and outputs a list of the next
     10 events on the user's calendar.
     """
+
+    calMatrix = [[0 for x in range(2)] for x in range(eventNum)]
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('calendar', 'v3', http=http)
@@ -133,20 +135,15 @@ def getCalendar():
         calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
         orderBy='startTime').execute()
     events = eventsResult.get('items', [])
-
+    track = 0
     if not events:
         print 'No upcoming events found.'
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
-        print start, event['summary']
-    print "\n"
-
-
-
-getCalendar()
-
-
-
+        calMatrix[track][0] = start
+        calMatrix[track][1] = event['summary']
+        track += 1
+    return calMatrix
 
 def getNews():
     d = feedparser.parse('http://rss.nytimes.com/services/xml/rss/nyt/World.xml')
