@@ -1,0 +1,29 @@
+README file for Jasper Bingham and Chris Livngston's 
+
+"Smart Coffee Table" 
+
+General Description:
+
+	The smart coffee table is your personal dashboard for getting in touch with frequently used personal applications in an easy-to-use, beverage-friendly table interface. Users can read email, news, weather reports, and time from a centralized location and supplement watching the morning news and coffee with other useful imformation that can better prepare him or her for the day ahead.
+
+Directory Structure:
+
+
+	smart-coffee-table-/
+		smartCoffeeTable.py
+		display.py
+		graphics.py
+		README
+		static-/
+			.jpegs (for background)
+
+
+
+Testing Methodology: 
+
+	We will test the initial progress report for our Smart Coffee Table application by combining the display/graphics functionality with the email and weather readings to form an initial prototyped graphical display. 
+
+	Once the display is functioning properly as a stand alone application, we will connect the buttons for the raspberry by to get dimming/activiating functionality. 
+
+
+
