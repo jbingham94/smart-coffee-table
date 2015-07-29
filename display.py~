@@ -5,7 +5,7 @@ from graphics import *
 def main():
     
     win = GraphWin("Smart Coffee Display",1365,900)
-    background_image="./static/terra.gif"
+    background_image="terra.gif"
     back(background_image, win)
     #cantor(600, 600, 60,win)
     #drawCircle(700,350,350,win)
