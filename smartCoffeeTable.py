@@ -69,9 +69,10 @@ def getWeather(zipcode):
 
     weather_com_result = pywapi.get_weather_from_weather_com(zipcode)
 
-    print "Currently " + string.lower(weather_com_result['current_conditions']['text']) + " and " + convertToF(weather_com_result['current_conditions']['temperature']) + "F.\n"
+    print "Weather Report:"
+    print "Currently: " + weather_com_result['current_conditions']['text'] + " and " + convertToF(weather_com_result['current_conditions']['temperature']) + "F.\n"
     print "Today's high will be " + convertToF((weather_com_result['forecasts'][0]['high'])) + "F.\n"
-    print "Tomorrow's forecast: " + string.lower(weather_com_result['forecasts'][1]['day']['text']) + ", high " + convertToF((weather_com_result['forecasts'][1]['high'])) + "F.\n"
+    print "Tomorrow's forecast: " + weather_com_result['forecasts'][1]['day']['text'] + ", high " + convertToF((weather_com_result['forecasts'][1]['high'])) + "F.\n"
 getWeather(zipcode)
 
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
