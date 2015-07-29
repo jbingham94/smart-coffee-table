@@ -1,8 +1,6 @@
 import imaplib
 import email
 import pywapi
-import pprint
-import string
 import httplib2
 import os
 from apiclient import discovery
@@ -59,28 +57,16 @@ def getMail(emailNum):
 def convertToF(celcius):
     return str(((int(celcius)*9)/5) + 32)
 
+# first entry is weather description, second is high temp
 def getWeather(zipcode):
-    pp = pprint.PrettyPrinter(indent=4)
-
+    # pp = pprint.PrettyPrinter(indent=4)
+    weatherMatrix = [[0 for x in range(2)] for x in range(2)]
     weather_com_result = pywapi.get_weather_from_weather_com(zipcode)
-
-
-    #print "According to weather.com, it is currently " + string.lower(weather_com_result['current_conditions']['text']) + " and " + str(convertToF(int(weather_com_result['current_conditions']['temperature']))) + " F.\n"
-
-    return "According to weather.com, it is currently " + string.lower(weather_com_result['current_conditions']['text']) + " and " + str(convertToF(int(weather_com_result['current_conditions']['temperature']))) + " F.\n"
-
-
-
-
-
-    print "Weather Report:"
-    print "Currently: " + weather_com_result['current_conditions']['text'] + " and " + convertToF(weather_com_result['current_conditions']['temperature']) + "F.\n"
-    print "Today's high will be " + convertToF((weather_com_result['forecasts'][0]['high'])) + "F.\n"
-    print "Tomorrow's forecast: " + weather_com_result['forecasts'][1]['day']['text'] + ", high " + convertToF((weather_com_result['forecasts'][1]['high'])) + "F.\n"
-
-
-getMail(emailNum)
-getWeather(zipcode)
+    weatherMatrix[0][0] = weather_com_result['current_conditions']['text']
+    weatherMatrix[0][1] = convertToF((weather_com_result['forecasts'][0]['high']))
+    weatherMatrix[1][0] = weather_com_result['forecasts'][1]['day']['text']
+    weatherMatrix[1][1] = convertToF((weather_com_result['forecasts'][1]['high']))
+    return weatherMatrix
 
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
