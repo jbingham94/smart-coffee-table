@@ -1,39 +1,61 @@
 from graphics import *
 
+'''
+NOTES: 
+
+Terra.gif settings are 400x400 anchor point
+
+
+
+'''
 
 
 def main():
     
-    win = GraphWin("Smart Coffee Display",1365,900)
-    background_image="./static/terra.gif"
-    back(background_image, win)
+    win = GraphWin("Smart Coffee Display",1365,900) 
+    background_image="./static/26.gif"
+    background(background_image, win)
     #cantor(600, 600, 60,win)
     #drawCircle(700,350,350,win)
+
+    string = "HELLOOOOO"
+    txt(string, win)
     win.getMouse() # Pause to view result
     win.close()    # Close window when done
 
 
 
 
+def txt(tex, win):
 
-def back(img_name, win):
+
+
+	point = Point(400, 400)
+
+	t = Text(point, tex)
+
+	t.setSize(30)
+
+	t.setTextColor("white")
+
+
+
+	t.draw(win)
+
+
+
+
+
+
+
+def background(img_name, win):
 
 	#create a point by specifying the x and y positions
-	point1 = Point(400, 400)
+	point1 = Point(680, 350) 
 	# create image object
 	image1 = Image(point1, img_name)
 	#make it show up in the window
 	image1.draw(win)
-
-
-
-def background(imag, win):
-	
-	p = Point(40,40)
-	i = Image("lone_converted.gif")
-	i.draw(win)
-	
-
 
 
 

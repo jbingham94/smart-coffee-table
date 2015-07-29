@@ -1,5 +1,6 @@
-ean function : deletes all temporary files
+# Cleans up unneccesary files 
 clean :
+	rm -f *.pyc
 	rm -f *~
 	rm -f *#
 	rm -f *.o
