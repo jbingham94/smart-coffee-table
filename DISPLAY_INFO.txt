@@ -1,0 +1,17 @@
+Formatted Components currently on display:
+
+	Background .gif image
+
+	Emails:
+		4 seperate email notifications
+
+	News: 
+		News box displaying 3 seperate news headlines
+
+	Weather: 
+
+		Simpe text weather notificaitons for current high temp and tomorrows predicted temp
+
+	Calender:
+
+		Will display simple text for calender. A more in depth display will be in the next update/submission. 
