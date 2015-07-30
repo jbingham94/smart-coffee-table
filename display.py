@@ -14,6 +14,7 @@
 
 from graphics import *
 from smartCoffeeTable import *
+import datetime
 
 
 def main():
@@ -24,14 +25,30 @@ def main():
     #cantor(600, 600, 60,win)
     #drawCircle(700,350,350,win)
 
+    win.getMouse() # Pause to view result
     
     emailHeader("Email:", win)
-    newsHeader("News:", win)
     mail(win)
+
+    win.getMouse() # Pause to view result
+
+    newsHeader("News:", win)
     newsbox(win)
     news(win)
+    
+    win.getMouse() # Pause to view result
 
+    eventsHeader("Events:",win)
     calendar(win)
+
+    win.getMouse() # Pause to view result
+
+    weatherHeader("Weather:", win)
+    weather(win)
+
+    win.getMouse() # Pause to view result
+
+    time(win)
 
 
     # wait for mouse click to close window
@@ -39,17 +56,30 @@ def main():
     win.close()    # Close window when done
 
 
+def time(win):
+
+
+	current_time = datetime.datetime.now().time()
+	current_time = current_time.isoformat()
+
+	t0= Text(Point(668, 50), current_time)
+	t0.setFace('arial')
+	t0.setStyle("bold")
+	t0.setSize(30)
+	t0.setTextColor("green")
+	t0.draw(win)
+	
 
 def news(win):
 
-	s = 1085
+	s = 1080
 	font = "arial"
 	n = getNews(5)
 
 	t0= Text(Point(s, 100), n[0][0])
 	t0.setFace(font)
 	t0.setStyle("bold")
-	t0.setSize(12)
+	t0.setSize(11)
 	t0.setTextColor("black")
 	t0.draw(win)
 
@@ -63,7 +93,7 @@ def news(win):
 	t2= Text(Point(s, 160), n[1][0])
 	t2.setStyle("bold")
 	t2.setFace(font)
-	t2.setSize(12)
+	t2.setSize(11)
 	t2.setTextColor("black")
 	t2.draw(win)
 
@@ -76,7 +106,7 @@ def news(win):
 	t4= Text(Point(s, 220), n[2][0])
 	t4.setStyle("bold")
 	t4.setFace(font)
-	t4.setSize(12)
+	t4.setSize(11)
 	t4.setTextColor("black")
 	t4.draw(win)
 
@@ -220,27 +250,120 @@ def mail(win):
 '''
 
 
+def weather(win):
+
+	w = getWeather("03755")
+
+	font = "arial"
+	
+	t0= Text(Point(307, 600), w[0][0])
+	t0.setFace(font)
+	t0.setStyle("bold italic")
+	t0.setSize(28)
+	t0.setTextColor("white")
+	t0.draw(win)
+
+	t1= Text(Point(305, 630), w[0][1])
+	t1.setFace(font)
+	t1.setStyle("bold italic")
+	t1.setSize(28)
+	t1.setTextColor("white")
+	t1.draw(win)
+
+	t3= Text(Point(470, 600), w[1][0])
+	t3.setFace(font)
+	t3.setStyle("bold italic")
+	t3.setSize(28)
+	t3.setTextColor("white")
+	t3.draw(win)
+
+	t4= Text(Point(470, 630), w[1][1])
+	t4.setFace(font)
+	t4.setStyle("bold italic")
+	t4.setSize(28)
+	t4.setTextColor("white")
+	t4.draw(win)
+
+
+
 def calendar(win):
 
 	c = getCalendar(5)
+	font = "arial"
 	
-	t0= Text(Point(1300, 1100), c[0][0])
+	t0= Text(Point(1030, 520), c[0][0])
 	t0.setFace(font)
 	t0.setStyle("bold")
 	t0.setSize(20)
 	t0.setTextColor("white")
 	t0.draw(win)
 
-	c = getCalendar(5)
-	t1= Text(Point(1300, 1150), c[0][0])
+	t1= Text(Point(1030, 495), c[0][1])
 	t1.setFace(font)
 	t1.setStyle("bold")
 	t1.setSize(20)
 	t1.setTextColor("white")
 	t1.draw(win)
 
+
+	t2= Text(Point(1030, 585), c[1][0])
+	t2.setFace(font)
+	t2.setStyle("bold")
+	t2.setSize(20)
+	t2.setTextColor("white")
+	t2.draw(win)
+
+	t3= Text(Point(1030, 560), c[1][1])
+	t3.setFace(font)
+	t3.setStyle("bold")
+	t3.setSize(20)
+	t3.setTextColor("white")
+	t3.draw(win)
+
 	
 
+def weatherHeader(tex, win):
+
+
+	point = Point(330, 560)
+
+	t = Text(point, tex)
+
+	t.setSize(24)
+	t.setStyle("bold")
+	t.setFace("arial")
+
+	t.setTextColor("yellow")
+
+	t.draw(win)	
+
+	
+
+	point = Point(470, 660)
+
+	t1 = Text(point, 'tomorrow')
+    
+	t1.setSize(16)
+	t1.setStyle("bold")
+	t1.setFace("arial")
+
+	t1.setTextColor("yellow")
+
+	t1.draw(win)	
+
+
+	point = Point(307, 660)
+
+	t2 = Text(point, 'today')
+    
+	
+	t2.setSize(16)
+	t2.setStyle("bold")
+	t2.setFace("arial")
+
+	t2.setTextColor("yellow")
+
+	t2.draw(win)	
 
 
 
@@ -259,10 +382,27 @@ def emailHeader(tex, win):
 
 	t.draw(win)
 
+
+def eventsHeader(tex, win):
+
+
+	point = Point(925,470)
+
+	t = Text(point, tex)
+
+	t.setSize(24)
+	t.setStyle("bold")
+	t.setFace("arial")
+
+	t.setTextColor("yellow")
+
+	t.draw(win)
+
+
 def newsHeader(tex, win):
 
 
-	point = Point(915, 55)
+	point = Point(895, 55)
 
 	t = Text(point, tex)
 
@@ -285,7 +425,7 @@ def background(img_name, win):
 
 def newsbox(win):
 
-	b = Rectangle(Point(880,75),Point(1300, 265))
+	b = Rectangle(Point(860,75),Point(1300, 265))
 	b.setFill("white")
 	b.draw(win)
 

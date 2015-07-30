@@ -116,19 +116,25 @@ def getCalendar(eventNum):
     service = discovery.build('calendar', 'v3', http=http)
 
     now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
-    print 'Upcoming events:'
+   # print 'Upcoming events:'
     eventsResult = service.events().list(
         calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
         orderBy='startTime').execute()
     events = eventsResult.get('items', [])
     track = 0
-    if not events:
-        print 'No upcoming events found.'
-    for event in events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        calMatrix[track][0] = start
-        calMatrix[track][1] = event['summary']
-        track += 1
+    if (not events):
+        calMatrix[track][0] = "No Upcoming events found."
+        calMatrix[track][1] = "Get Planning!"
+        #print 'No upcoming events found.'
+    else:
+
+        for event in events:
+
+            start = event['start'].get('dateTime', event['start'].get('date'))
+            calMatrix[track][0] = start
+            calMatrix[track][1] = event['summary']
+            track += 1
+        
     return calMatrix
 
 newsNum = 5
