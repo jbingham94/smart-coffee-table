@@ -140,5 +140,6 @@ def getNews(newsNum):
     for x in range(0, newsNum):
         newsMatrix[x][0] = d.entries[x].title
         newsMatrix[x][1] = d.entries[x].author
-        return newsMatrix
-        # print d.entries[x].description + "\n"
+
+    return newsMatrix
+        

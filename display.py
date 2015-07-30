@@ -26,9 +26,12 @@ def main():
 
     
     emailHeader("Email:", win)
+    newsHeader("News:", win)
     mail(win)
     newsbox(win)
     news(win)
+
+    calendar(win)
 
 
     # wait for mouse click to close window
@@ -39,23 +42,49 @@ def main():
 
 def news(win):
 
-	s = 1200
-	font = "helvetica"
+	s = 1085
+	font = "arial"
 	n = getNews(5)
 
 	t0= Text(Point(s, 100), n[0][0])
 	t0.setFace(font)
-	t0.setSize(14)
+	t0.setStyle("bold")
+	t0.setSize(12)
 	t0.setTextColor("black")
 	t0.draw(win)
 
 	t1= Text(Point(s, 120), n[0][1])
 	t1.setFace(font)
-	t1.setSize(14)
+	t1.setSize(10)
 	t1.setTextColor("black")
 	t1.draw(win)
 
 
+	t2= Text(Point(s, 160), n[1][0])
+	t2.setStyle("bold")
+	t2.setFace(font)
+	t2.setSize(12)
+	t2.setTextColor("black")
+	t2.draw(win)
+
+	t3= Text(Point(s, 180), n[1][1])
+	t3.setFace(font)
+	t3.setSize(10)
+	t3.setTextColor("black")
+	t3.draw(win)
+
+	t4= Text(Point(s, 220), n[2][0])
+	t4.setStyle("bold")
+	t4.setFace(font)
+	t4.setSize(12)
+	t4.setTextColor("black")
+	t4.draw(win)
+
+	t5= Text(Point(s, 240), n[2][1])
+	t5.setFace(font)
+	t5.setSize(10)
+	t5.setTextColor("black")
+	t5.draw(win)
 
 
 
@@ -157,11 +186,68 @@ def mail(win):
 	t15.setTextColor("white")
 	t15.draw(win)
 
+	'''
+
+	t16= Text(Point(s, 490), m[3][0])
+	t16.setFace(font)
+	t16.setSize(16)
+	t16.setTextColor("white")
+	t16.draw(win)
+
+	t17= Text(Point(s, 510), m[3][1])
+	t17.setFace(font)
+	t17.setSize(16)
+	t17.setTextColor("white")
+	t17.draw(win)
+
+	t18 = Text(Point(s, 530), m[3][2])
+	t18.setFace(font)
+	t18.setSize(16)
+	t18.setTextColor("white")
+	t18.draw(win)
+
+	t19 = Text(Point(s, 550), m[3][3])
+	t19.setFace(font)
+	t19.setSize(16)
+	t19.setTextColor("white")
+	t19.draw(win)
+
+	t20 = Text(Point(s, 570), m[3][4])
+	t20.setFace(font)
+	t20.setSize(16)
+	t20.setTextColor("white")
+	t20.draw(win)
+'''
+
+
+def calendar(win):
+
+	c = getCalendar(5)
+	
+	t0= Text(Point(1300, 1100), c[0][0])
+	t0.setFace(font)
+	t0.setStyle("bold")
+	t0.setSize(20)
+	t0.setTextColor("white")
+	t0.draw(win)
+
+	c = getCalendar(5)
+	t1= Text(Point(1300, 1150), c[0][0])
+	t1.setFace(font)
+	t1.setStyle("bold")
+	t1.setSize(20)
+	t1.setTextColor("white")
+	t1.draw(win)
+
+	
+
+
+
 
 def emailHeader(tex, win):
 
 
-	point = Point(130, 75)
+	point = Point(130, 55)
 
 	t = Text(point, tex)
 
@@ -173,6 +259,20 @@ def emailHeader(tex, win):
 
 	t.draw(win)
 
+def newsHeader(tex, win):
+
+
+	point = Point(915, 55)
+
+	t = Text(point, tex)
+
+	t.setSize(24)
+	t.setStyle("bold")
+	t.setFace("arial")
+
+	t.setTextColor("yellow")
+
+	t.draw(win)
 
 def background(img_name, win):
 
@@ -183,10 +283,9 @@ def background(img_name, win):
 	#make it show up in the window
 	image1.draw(win)
 
-
 def newsbox(win):
 
-	b = Rectangle(Point(900,80),Point(1270, 275))
+	b = Rectangle(Point(880,75),Point(1300, 265))
 	b.setFill("white")
 	b.draw(win)
 
