@@ -15,6 +15,7 @@
 from graphics import *
 from smartCoffeeTable import *
 import datetime
+import textwrap
 
 
 def main():
@@ -81,23 +82,30 @@ def news(win):
 	big_sz = 11
 	sm_sz = 10
 	start_coord = 100
-	incr = 20
+	sm_incr = 20
+	mid_incr = 30
 	big_incr = 40
 	stories = 3
-	elem = 2
+	elem = 3
 
 	for x in range(0, stories):
 		for y in range(0, elem):
-			t= Text(Point(s, start_coord), n[x][y])
+			if y == elem-1:
+				t = Text(Point(s, start_coord), textwrap.fill(n[x][y],80))
+			else: 
+				t = Text(Point(s, start_coord), n[x][y])
 			t.setFace(font)
-			t.setStyle(effect_str)
+			if y == 0:
+				t.setStyle(effect_str)
 			t.setSize(big_sz)
 			t.setTextColor(color_str)
 			t.draw(win)
 			if y == elem - 1: 
 				start_coord = start_coord + big_incr
+			elif y == elem - 2:
+				start_coord = start_coord + mid_incr
 			else:
-				start_coord = start_coord + incr
+				start_coord = start_coord + sm_incr
 
 def mail(win):
 
@@ -169,15 +177,21 @@ def calendar(win):
 	start_coord = 520
 	decr = 25
 	incr = 90
+	no_more_events = 0
 
 	for x in range(0, events):
+		if no_more_events == 1:
+			break
 		for y in range(0, elem):
-			t0= Text(Point(x_coord, start_coord), c[x][y])
-			t0.setFace(font)
-			t0.setStyle(style_str)
-			t0.setSize(size)
-			t0.setTextColor(color_str)
-			t0.draw(win)
+			if c[x][y] == 0:
+				no_more_events = 1
+				break
+			t= Text(Point(x_coord, start_coord), c[x][y])
+			t.setFace(font)
+			t.setStyle(style_str)
+			t.setSize(size)
+			t.setTextColor(color_str)
+			t.draw(win)
 			if y == elem - 1:
 				start_coord = start_coord + incr
 			else:
@@ -287,7 +301,7 @@ def background(img_name, win):
 
 def newsbox(win):
 
-	b = Rectangle(Point(860,75),Point(1300, 265))
+	b = Rectangle(Point(860,75),Point(1300, 350))
 	b.setFill("white")
 	b.draw(win)
 

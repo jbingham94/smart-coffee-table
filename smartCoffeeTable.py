@@ -126,8 +126,8 @@ def getCalendar(eventNum):
     events = eventsResult.get('items', [])
     track = 0
     if (not events):
-        calMatrix[track][0] = "No Upcoming events found."
-        calMatrix[track][1] = "Get Planning!"
+        calMatrix[track][0] = "No upcoming events found."
+        calMatrix[track][1] = "Get planning!"
         #print 'No upcoming events found.'
     else:
 
