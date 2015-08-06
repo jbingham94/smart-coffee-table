@@ -74,252 +74,118 @@ def news(win):
 
 	s = 1080
 	font = "arial"
-	n = getNews(5)
+	stor_num = 5
+	n = getNews(stor_num)
+	effect_str = "bold"
+	color_str = "black"
+	big_sz = 11
+	sm_sz = 10
+	start_coord = 100
+	incr = 20
+	big_incr = 40
+	stories = 3
 
-	t0= Text(Point(s, 100), n[0][0])
-	t0.setFace(font)
-	t0.setStyle("bold")
-	t0.setSize(11)
-	t0.setTextColor("black")
-	t0.draw(win)
+	for x in range(0, stories):
+		t0= Text(Point(s, start_coord), n[x][0])
+		t0.setFace(font)
+		t0.setStyle(effect_str)
+		t0.setSize(big_sz)
+		t0.setTextColor(color_str)
+		t0.draw(win)
 
-	t1= Text(Point(s, 120), n[0][1])
-	t1.setFace(font)
-	t1.setSize(10)
-	t1.setTextColor("black")
-	t1.draw(win)
+		start_coord = start_coord + incr
 
+		t1= Text(Point(s, start_coord), n[x][1])
+		t1.setFace(font)
+		t1.setSize(sm_sz)
+		t1.setTextColor(color_str)
+		t1.draw(win)
 
-	t2= Text(Point(s, 160), n[1][0])
-	t2.setStyle("bold")
-	t2.setFace(font)
-	t2.setSize(11)
-	t2.setTextColor("black")
-	t2.draw(win)
-
-	t3= Text(Point(s, 180), n[1][1])
-	t3.setFace(font)
-	t3.setSize(10)
-	t3.setTextColor("black")
-	t3.draw(win)
-
-	t4= Text(Point(s, 220), n[2][0])
-	t4.setStyle("bold")
-	t4.setFace(font)
-	t4.setSize(11)
-	t4.setTextColor("black")
-	t4.draw(win)
-
-	t5= Text(Point(s, 240), n[2][1])
-	t5.setFace(font)
-	t5.setSize(10)
-	t5.setTextColor("black")
-	t5.draw(win)
-
-
+		start_coord = start_coord + big_incr
 
 def mail(win):
 
-	m = getMail(5)
+	emails = 3
+	m = getMail(emails)
 	s = 270 # width for email text
 	font = "arial"
+	start_coord = 100
+	sm_incr = 20
+	mid_incr = 33
+	big_incr = 37
+	font_sz = 16
+	color_str = "white"
+	elem = 4
 
-	t0= Text(Point(s, 100), m[0][0])
-	t0.setFace(font)
-	t0.setSize(16)
-	t0.setTextColor("white")
-	t0.draw(win)
-
-	t1= Text(Point(s, 120), m[0][1])
-	t1.setFace(font)
-	t1.setSize(16)
-	t1.setTextColor("white")
-	t1.draw(win)
-
-	t3 = Text(Point(s, 140), m[0][2])
-	t3.setFace(font)
-	t3.setSize(16)
-	t3.setTextColor("white")
-	t3.draw(win)
-
-	t4 = Text(Point(s, 160), m[0][3])
-	t4.setFace(font)
-	t4.setSize(16)
-	t4.setTextColor("white")
-	t4.draw(win)
-
-	t5 = Text(Point(s, 197), m[0][4])
-	t5.setFace(font)
-	t5.setSize(16)
-	t5.setTextColor("white")
-	t5.draw(win)
-
-
-	
-	t6= Text(Point(s, 230), m[1][0])
-	t6.setFace(font)
-	t6.setSize(16)
-	t6.setTextColor("white")
-	t6.draw(win)
-
-	t7= Text(Point(s, 250), m[1][1])
-	t7.setFace(font)
-	t7.setSize(16)
-	t7.setTextColor("white")
-	t7.draw(win)
-
-	t8 = Text(Point(s, 270), m[1][2])
-	t8.setFace(font)
-	t8.setSize(16)
-	t8.setTextColor("white")
-	t8.draw(win)
-
-	t9 = Text(Point(s, 290), m[1][3])
-	t9.setFace(font)
-	t9.setSize(16)
-	t9.setTextColor("white")
-	t9.draw(win)
-
-	t10 = Text(Point(s, 327), m[1][4])
-	t10.setFace(font)
-	t10.setSize(16)
-	t10.setTextColor("white")
-	t10.draw(win)
-
-	t11= Text(Point(s, 360), m[2][0])
-	t11.setFace(font)
-	t11.setSize(16)
-	t11.setTextColor("white")
-	t11.draw(win)
-
-	t12= Text(Point(s, 380), m[2][1])
-	t12.setFace(font)
-	t12.setSize(16)
-	t12.setTextColor("white")
-	t12.draw(win)
-
-	t13 = Text(Point(s, 400), m[2][2])
-	t13.setFace(font)
-	t13.setSize(16)
-	t13.setTextColor("white")
-	t13.draw(win)
-
-	t14 = Text(Point(s, 420), m[2][3])
-	t14.setFace(font)
-	t14.setSize(16)
-	t14.setTextColor("white")
-	t14.draw(win)
-
-	t15 = Text(Point(s, 457), m[2][4])
-	t15.setFace(font)
-	t15.setSize(16)
-	t15.setTextColor("white")
-	t15.draw(win)
-
-	'''
-
-	t16= Text(Point(s, 490), m[3][0])
-	t16.setFace(font)
-	t16.setSize(16)
-	t16.setTextColor("white")
-	t16.draw(win)
-
-	t17= Text(Point(s, 510), m[3][1])
-	t17.setFace(font)
-	t17.setSize(16)
-	t17.setTextColor("white")
-	t17.draw(win)
-
-	t18 = Text(Point(s, 530), m[3][2])
-	t18.setFace(font)
-	t18.setSize(16)
-	t18.setTextColor("white")
-	t18.draw(win)
-
-	t19 = Text(Point(s, 550), m[3][3])
-	t19.setFace(font)
-	t19.setSize(16)
-	t19.setTextColor("white")
-	t19.draw(win)
-
-	t20 = Text(Point(s, 570), m[3][4])
-	t20.setFace(font)
-	t20.setSize(16)
-	t20.setTextColor("white")
-	t20.draw(win)
-'''
+	for x in range(0, emails):
+		for y in range(0, elem):
+			t = Text(Point(s, start_coord), m[x][y])
+			t.setFace(font)
+			t.setSize(font_sz)
+			t.setTextColor(color_str)
+			t.draw(win)
+			if y == elem-2: # second to last element in email
+				start_coord = start_coord + big_incr
+			elif y == elem-1: # last element in email
+				start_coord = start_coord + mid_incr
+			else: start_coord = start_coord + sm_incr
 
 
 def weather(win):
 
-	w = getWeather("03755")
-
+	zipcode = "03755"
 	font = "arial"
-	
-	t0= Text(Point(307, 600), w[0][0])
-	t0.setFace(font)
-	t0.setStyle("bold italic")
-	t0.setSize(28)
-	t0.setTextColor("white")
-	t0.draw(win)
+	style_str = "bold italic"
+	color_str = "white"
+	size = 28
+	start_x_coord = 305
+	start_y_coord = 600
+	x_inc = 165
+	y_inc = 30
+	days = 2
+	elem = 2
+	w = getWeather(zipcode)
 
-	t1= Text(Point(305, 630), w[0][1])
-	t1.setFace(font)
-	t1.setStyle("bold italic")
-	t1.setSize(28)
-	t1.setTextColor("white")
-	t1.draw(win)
-
-	t3= Text(Point(470, 600), w[1][0])
-	t3.setFace(font)
-	t3.setStyle("bold italic")
-	t3.setSize(28)
-	t3.setTextColor("white")
-	t3.draw(win)
-
-	t4= Text(Point(470, 630), w[1][1])
-	t4.setFace(font)
-	t4.setStyle("bold italic")
-	t4.setSize(28)
-	t4.setTextColor("white")
-	t4.draw(win)
-
-
+	for x in range(0, days):
+		for y in range(0, elem):
+			t = Text(Point(start_x_coord, start_y_coord), w[x][y])
+			t.setFace(font)
+			t.setStyle(style_str)
+			t.setSize(size)
+			t.setTextColor(color_str)
+			t.draw(win)
+			if y == elem-1:
+				start_x_coord = start_x_coord + x_inc
+				start_y_coord = start_y_coord - y_inc
+			else:
+				start_y_coord = start_y_coord + y_inc
 
 def calendar(win):
 
-	c = getCalendar(5)
+	events = 2
+	elem = 2
+	c = getCalendar(events)
 	font = "arial"
-	
-	t0= Text(Point(1030, 520), c[0][0])
-	t0.setFace(font)
-	t0.setStyle("bold")
-	t0.setSize(20)
-	t0.setTextColor("white")
-	t0.draw(win)
+	style_str = "bold"
+	size = 20
+	color_str = "white"
+	x_coord = 1030
+	start_coord = 520
+	decr = 25
+	incr = 90
 
-	t1= Text(Point(1030, 495), c[0][1])
-	t1.setFace(font)
-	t1.setStyle("bold")
-	t1.setSize(20)
-	t1.setTextColor("white")
-	t1.draw(win)
-
-
-	t2= Text(Point(1030, 585), c[1][0])
-	t2.setFace(font)
-	t2.setStyle("bold")
-	t2.setSize(20)
-	t2.setTextColor("white")
-	t2.draw(win)
-
-	t3= Text(Point(1030, 560), c[1][1])
-	t3.setFace(font)
-	t3.setStyle("bold")
-	t3.setSize(20)
-	t3.setTextColor("white")
-	t3.draw(win)
-
+	for x in range(0, events):
+		for y in range(0, elem):
+			t0= Text(Point(x_coord, start_coord), c[x][y])
+			t0.setFace(font)
+			t0.setStyle(style_str)
+			t0.setSize(size)
+			t0.setTextColor(color_str)
+			t0.draw(win)
+			if y == elem - 1:
+				start_coord = start_coord + incr
+			else:
+				start_coord = start_coord - decr
 	
 
 def weatherHeader(tex, win):

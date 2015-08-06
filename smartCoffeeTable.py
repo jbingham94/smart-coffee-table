@@ -28,7 +28,7 @@ mail.select("inbox")  # connect to inbox.
 
 def getMail(emailNum):
 
-    mailMatrix = [[0 for x in range(5)] for x in range(emailNum)]
+    mailMatrix = [[0 for x in range(4)] for x in range(emailNum)]
 
     for x in range(-1, (emailNum-1)):  # will expand range later - second number = number of emails to display minus 1
         result, data = mail.uid('search', None, "ALL")  # search and return uids instead
@@ -40,9 +40,8 @@ def getMail(emailNum):
         date = dparser.parse(date_str)
         date = date.strftime('%b %d at %I:%M %p')
         mailMatrix[x][0] = date
-        mailMatrix[x][1] = 'To: ' + email_message['To']
-        mailMatrix[x][2] = 'From: ' + email_message['From']
-        mailMatrix[x][3] = email_message['Subject']
+        mailMatrix[x][1] = 'From: ' + email_message['From']
+        mailMatrix[x][2] = email_message['Subject']
         body = ""
         for part in email_message.walk():
         # each part is a either non-multipart, or another multipart message
@@ -50,7 +49,7 @@ def getMail(emailNum):
             if part.get_content_type() == 'text/plain':
                 body = body + part.get_payload()  # prints the raw text
 
-        mailMatrix[x][4] = body
+        mailMatrix[x][3] = body
         #print email_message.items()  # print all headers
 
     return mailMatrix
