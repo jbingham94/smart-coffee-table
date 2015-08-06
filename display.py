@@ -15,6 +15,8 @@
 from graphics import *
 from smartCoffeeTable import *
 import datetime
+import time
+from dateutil.relativedelta import relativedelta
 import textwrap
 
 
@@ -23,62 +25,49 @@ def main():
     win = GraphWin("Smart Coffee Display",1365,900) 
     background_image="./static/26.gif"
     background(background_image, win)
-    #cantor(600, 600, 60,win)
-    #drawCircle(700,350,350,win)
 
-    win.getMouse() # Pause to view result
-    
-    emailHeader("Email:", win)
     mail(win)
 
-    win.getMouse() # Pause to view result
-
-    newsHeader("News:", win)
-    newsbox(win)
     news(win)
-    
-    win.getMouse() # Pause to view result
 
-    eventsHeader("Events:",win)
     calendar(win)
 
-    win.getMouse() # Pause to view result
-
-    weatherHeader("Weather:", win)
+    weatherTags("WEATHER", win)
     weather(win)
 
-    win.getMouse() # Pause to view result
-
-    time(win)
-
+    var = 1
+    while var == 1:
+    	obj = time(win)
+    	obj.undraw()
 
     # wait for mouse click to close window
-    win.getMouse() # Pause to view result
+    click = win.getMouse() # Pause to view result
+    print click.getX()
+    print click.getY()
     win.close()    # Close window when done
 
 
 def time(win):
 
-
-	current_time = datetime.datetime.now().time()
-	current_time = current_time.isoformat()
-
-	t0= Text(Point(668, 50), current_time)
-	t0.setFace('arial')
-	t0.setStyle("bold")
-	t0.setSize(30)
-	t0.setTextColor("green")
-	t0.draw(win)
-	
+	time = datetime.datetime.now().time()
+	time_str = time.strftime('%l:%M:%S %p')
+	t= Text(Point(668, 50), time_str)
+	t.setFace('arial')
+	t.setStyle("bold")
+	t.setSize(30)
+	t.setTextColor("green")
+	t.draw(win)
+	return t
 
 def news(win):
 
-	s = 1080
 	font = "arial"
-	stor_num = 5
-	n = getNews(stor_num)
 	effect_str = "bold"
-	color_str = "black"
+	color_str = "white"
+	header_color_str = "yellow"
+	header_str = "NEWS"
+	s = 1080
+	stor_num = 5
 	big_sz = 11
 	sm_sz = 10
 	start_coord = 100
@@ -87,6 +76,19 @@ def news(win):
 	big_incr = 40
 	stories = 3
 	elem = 3
+	header_x = 895
+	header_y = 55
+	header_sz = 24
+	n = getNews(stor_num)
+
+	# header stuff
+	point = Point(header_x, header_y)
+	t = Text(point, header_str)
+	t.setSize(header_sz)
+	t.setStyle(effect_str)
+	t.setFace(font)
+	t.setTextColor(header_color_str)
+	t.draw(win)
 
 	for x in range(0, stories):
 		for y in range(0, elem):
@@ -109,18 +111,35 @@ def news(win):
 
 def mail(win):
 
-	emails = 3
-	m = getMail(emails)
-	s = 270 # width for email text
+	# variables
+	header_style = "bold"
+	header_text = "EMAIL"
+	header_color_str = "yellow"
 	font = "arial"
+	color_str = "white"
+	emails = 3
+	s = 270 # width for email text
+	header_x = 130
+	header_y = 55
+	header_size = 24
 	start_coord = 100
 	sm_incr = 20
 	mid_incr = 33
 	big_incr = 37
 	font_sz = 16
-	color_str = "white"
 	elem = 4
+	m = getMail(emails)
 
+	# header stuff
+	point = Point(header_x, header_y)
+	t = Text(point, header_text)
+	t.setSize(header_size)
+	t.setStyle(header_style)
+	t.setFace(font)
+	t.setTextColor(header_color_str)
+	t.draw(win)
+
+	# displaying emails
 	for x in range(0, emails):
 		for y in range(0, elem):
 			t = Text(Point(s, start_coord), m[x][y])
@@ -142,11 +161,13 @@ def weather(win):
 	style_str = "bold italic"
 	color_str = "white"
 	size = 28
-	start_x_coord = 305
-	start_y_coord = 600
-	x_inc = 165
+	start_x_coord = 170
+	start_y_coord = 500
+	newline_x_coord = 270
+	newline_y_coord = 600
+	x_inc = 200
 	y_inc = 30
-	days = 2
+	days = 5
 	elem = 2
 	w = getWeather(zipcode)
 
@@ -163,21 +184,41 @@ def weather(win):
 				start_y_coord = start_y_coord - y_inc
 			else:
 				start_y_coord = start_y_coord + y_inc
+			if x == 2:
+				start_x_coord = newline_x_coord
+				start_y_coord = newline_y_coord
+
 
 def calendar(win):
 
-	events = 2
-	elem = 2
-	c = getCalendar(events)
+	# variables
 	font = "arial"
 	style_str = "bold"
-	size = 20
 	color_str = "white"
+	header_color_str = "yellow"
+	header_str = "EVENTS"
+	events = 2
+	elem = 2
+	size = 20
 	x_coord = 1030
+	header_x = 925
+	header_y = 470
 	start_coord = 520
 	decr = 25
 	incr = 90
 	no_more_events = 0
+	header_sz = 24
+	c = getCalendar(events)
+
+	# header stuff
+
+	point = Point(header_x, header_y)
+	t = Text(point, header_str)
+	t.setSize(header_sz)
+	t.setStyle(style_str)
+	t.setFace(font)
+	t.setTextColor(header_color_str)
+	t.draw(win)
 
 	for x in range(0, events):
 		if no_more_events == 1:
@@ -198,97 +239,41 @@ def calendar(win):
 				start_coord = start_coord - decr
 	
 
-def weatherHeader(tex, win):
+def weatherTags(tex, win):
 
+	style_str = "bold"
+	font = "arial"
+	color_str = "yellow"
+	days = 5
+	big_sz = 24
+	sm_sz = 16
+	# for header
+	header_x = 130
+	header_y = 400
+	# for the actual days, not the header
+	start_x_coord = 170
+	start_y_coord = 660
+	incr = 200
 
-	point = Point(330, 560)
-
+	# header setup
+	point = Point(header_x, header_y)
 	t = Text(point, tex)
-
-	t.setSize(24)
-	t.setStyle("bold")
-	t.setFace("arial")
-
-	t.setTextColor("yellow")
-
-	t.draw(win)	
-
-	
-
-	point = Point(470, 660)
-
-	t1 = Text(point, 'tomorrow')
-    
-	t1.setSize(16)
-	t1.setStyle("bold")
-	t1.setFace("arial")
-
-	t1.setTextColor("yellow")
-
-	t1.draw(win)	
-
-
-	point = Point(307, 660)
-
-	t2 = Text(point, 'today')
-    
-	
-	t2.setSize(16)
-	t2.setStyle("bold")
-	t2.setFace("arial")
-
-	t2.setTextColor("yellow")
-
-	t2.draw(win)	
-
-
-
-def emailHeader(tex, win):
-
-
-	point = Point(130, 55)
-
-	t = Text(point, tex)
-
-	t.setSize(24)
-	t.setStyle("bold")
-	t.setFace("arial")
-
-	t.setTextColor("yellow")
-
+	t.setSize(big_sz)
+	t.setStyle(style_str)
+	t.setFace(font)
+	t.setTextColor(color_str)
 	t.draw(win)
 
-
-def eventsHeader(tex, win):
-
-
-	point = Point(925,470)
-
-	t = Text(point, tex)
-
-	t.setSize(24)
-	t.setStyle("bold")
-	t.setFace("arial")
-
-	t.setTextColor("yellow")
-
-	t.draw(win)
-
-
-def newsHeader(tex, win):
-
-
-	point = Point(895, 55)
-
-	t = Text(point, tex)
-
-	t.setSize(24)
-	t.setStyle("bold")
-	t.setFace("arial")
-
-	t.setTextColor("yellow")
-
-	t.draw(win)
+	for x in range(0, days):
+		date = datetime.date.today() + datetime.timedelta(days=x)
+		point = Point(start_x_coord, start_y_coord)
+		t = Text(point, date.strftime('%A'))
+		t.setSize(sm_sz)
+		t.setStyle(style_str)
+		t.setFace(font)
+		t.setTextColor(color_str)
+		t.draw(win)	
+		start_x_coord = start_x_coord + 200
 
 def background(img_name, win):
 
@@ -298,36 +283,6 @@ def background(img_name, win):
 	image1 = Image(point1, img_name)
 	#make it show up in the window
 	image1.draw(win)
-
-def newsbox(win):
-
-	b = Rectangle(Point(860,75),Point(1300, 350))
-	b.setFill("white")
-	b.draw(win)
-
-
-
-
-def drawCircle(x,y,radius,win):
-	c = Circle(Point(x,y), radius)
-	c.draw(win)
-
-	if (radius > 25):
-		
-		drawCircle(x+radius/2,y, radius/2,win)
-		drawCircle(x-radius/2,y, radius/2,win)
-		drawCircle(x,y+radius/2,radius/2,win)
-		drawCircle(x,y-radius/2,radius/2,win)
-def cantor(x,y,len,win):
-
-	if (len>=1): 
-		l = Line(Point(x,y),Point(x+len,y))
-		l.draw(win)
- 
-	  	y += 20
- 
-  		cantor(x,y,len/3,win)
-  		cantor(x+len*2/3,y,len/3,win)
 
 
 
