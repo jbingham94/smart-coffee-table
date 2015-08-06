@@ -7,7 +7,8 @@ from apiclient import discovery
 import oauth2client
 from oauth2client import client
 from oauth2client import tools
-import datetime
+import datetime as dt
+import dateutil.parser as dparser
 import feedparser
 
 try:
@@ -25,8 +26,6 @@ mail.list()
 mail.select("inbox")  # connect to inbox.
 #print "Your most recent emails:" + '\n'
 
-emailNum = 5
-zipcode = '03755'
 def getMail(emailNum):
 
     mailMatrix = [[0 for x in range(5)] for x in range(emailNum)]
@@ -37,8 +36,10 @@ def getMail(emailNum):
         result, data = mail.uid('fetch', latest_email_uid, '(RFC822)')
         raw_email = data[0][1]
         email_message = email.message_from_string(raw_email)
-
-        mailMatrix[x][0] = email_message['Date']
+        date_str = email_message['Date']
+        date=dparser.parse(date_str)
+        date=date.strftime('%b %d at %I:%M %p')
+        mailMatrix[x][0] = date
         mailMatrix[x][1] = 'To: ' + email_message['To']
         mailMatrix[x][2] = 'From: ' + email_message['From']
         mailMatrix[x][3] = email_message['Subject']
