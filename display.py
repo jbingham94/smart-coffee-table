@@ -84,24 +84,20 @@ def news(win):
 	incr = 20
 	big_incr = 40
 	stories = 3
+	elem = 2
 
 	for x in range(0, stories):
-		t0= Text(Point(s, start_coord), n[x][0])
-		t0.setFace(font)
-		t0.setStyle(effect_str)
-		t0.setSize(big_sz)
-		t0.setTextColor(color_str)
-		t0.draw(win)
-
-		start_coord = start_coord + incr
-
-		t1= Text(Point(s, start_coord), n[x][1])
-		t1.setFace(font)
-		t1.setSize(sm_sz)
-		t1.setTextColor(color_str)
-		t1.draw(win)
-
-		start_coord = start_coord + big_incr
+		for y in range(0, elem):
+			t= Text(Point(s, start_coord), n[x][y])
+			t.setFace(font)
+			t.setStyle(effect_str)
+			t.setSize(big_sz)
+			t.setTextColor(color_str)
+			t.draw(win)
+			if y == elem - 1: 
+				start_coord = start_coord + big_incr
+			else:
+				start_coord = start_coord + incr
 
 def mail(win):
 
