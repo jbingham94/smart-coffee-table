@@ -60,13 +60,21 @@ def convertToF(celcius):
 # first entry is weather description, second is high temp
 def getWeather(zipcode):
     # pp = pprint.PrettyPrinter(indent=4)
-    weatherMatrix = [[0 for x in range(2)] for x in range(2)]
+    weatherMatrix = [[0 for x in range(2)] for x in range(5)]
     weather_com_result = pywapi.get_weather_from_weather_com(zipcode)
+    # today first
     weatherMatrix[0][0] = weather_com_result['current_conditions']['text']
     weatherMatrix[0][1] = convertToF((weather_com_result['forecasts'][0]['high']))
-    weatherMatrix[1][0] = weather_com_result['forecasts'][1]['day']['text']
-    weatherMatrix[1][1] = convertToF((weather_com_result['forecasts'][1]['high']))
+    # rest of days
+    for x in range(1, 5):
+        weatherMatrix[x][0] = weather_com_result['forecasts'][x]['day']['text']
+        weatherMatrix[x][1] = convertToF((weather_com_result['forecasts'][x]['high']))
     return weatherMatrix
+
+weatherArray = getWeather('03755')
+for x in range(0, 5):
+    print weatherArray[x][0]
+    print weatherArray[x][1]
 
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
