@@ -71,11 +71,6 @@ def getWeather(zipcode):
         weatherMatrix[x][1] = convertToF((weather_com_result['forecasts'][x]['high']))
     return weatherMatrix
 
-weatherArray = getWeather('03755')
-for x in range(0, 5):
-    print weatherArray[x][0]
-    print weatherArray[x][1]
-
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Google Calendar API Quickstart'
