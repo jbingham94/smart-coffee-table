@@ -7,7 +7,7 @@ from apiclient import discovery
 import oauth2client
 from oauth2client import client
 from oauth2client import tools
-import datetime as dt
+import datetime
 import dateutil.parser as dparser
 import feedparser
 
@@ -37,8 +37,8 @@ def getMail(emailNum):
         raw_email = data[0][1]
         email_message = email.message_from_string(raw_email)
         date_str = email_message['Date']
-        date=dparser.parse(date_str)
-        date=date.strftime('%b %d at %I:%M %p')
+        date = dparser.parse(date_str)
+        date = date.strftime('%b %d at %I:%M %p')
         mailMatrix[x][0] = date
         mailMatrix[x][1] = 'To: ' + email_message['To']
         mailMatrix[x][2] = 'From: ' + email_message['From']
@@ -59,6 +59,7 @@ def convertToF(celcius):
     return str(((int(celcius)*9)/5) + 32)
 
 # first entry is weather description, second is high temp
+# NOTE: zipcode input must be a string, i.e. '00000'
 def getWeather(zipcode):
     # pp = pprint.PrettyPrinter(indent=4)
     weatherMatrix = [[0 for x in range(2)] for x in range(5)]
@@ -104,7 +105,6 @@ def get_credentials():
         print 'Storing credentials to ' + credential_path
     return credentials
 
-eventNum = 5
 # first entry is time, second is event title
 def getCalendar(eventNum):
 
@@ -135,7 +135,9 @@ def getCalendar(eventNum):
         for event in events:
 
             start = event['start'].get('dateTime', event['start'].get('date'))
-            calMatrix[track][0] = start
+            date = dparser.parse(start)
+            date = date.strftime('%b %d, %I:%M %p')
+            calMatrix[track][0] = date
             calMatrix[track][1] = event['summary']
             track += 1
         
