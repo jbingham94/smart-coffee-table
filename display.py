@@ -24,31 +24,26 @@ def main():
     win = GraphWin("Smart Coffee Display", 1365, 900)
 
     # set up background
-    background_image = "./static/26.gif"
+    background_image = "./static/space.gif"
     background(background_image, win)
 
     mail_x = 270
     mail_y = 100
+    weather_x = 170
+    weather_y = 500
     news_x = 1095
     news_y = 100
     cal_x = 1095
     cal_y = 520
-    weather_x = 170
-    weather_y = 500
+    
 
     # set up main modules
     mail_objs = mail(win, mail_x, mail_y)
     news_objs = news(win, news_x, news_y)
     cal_objs = calendar(win, cal_x, cal_y)
     weather_objs = weather(win, weather_x, weather_y)
-    clock(win)
-
-    # create continuous loop to make running clock
-    #var = 1
-    #while var == 1:
-    #    obj = clock(win)
-    #    time.sleep(1)
-    #    obj.undraw()
+    clock_obj = clock(win)
+    place_txt = coffeePlace(win)
 
     # wait for mouse click to close window
     var = 1
@@ -56,10 +51,38 @@ def main():
         click = win.getMouse()  # Pause to view result
         print click.getX()
         print click.getY()
-        if isModule(click.getX(), click.getY(), mail_x, mail_y) == 1:
-            print "MAIL!"
-            coffeeMove(mail_objs, 200, "x")
+        if (click.getX() >= 550 and click.getX() <= 600) and (click.getY() >= 440 and click.getY() <= 480):
+            place_txt.undraw()
+            instr = coffeeInstructions(win)
+            click = win.getMouse()
+            if isModule(click.getX(), click.getY(), mail_x, mail_y) == 1:
+                print "MAIL!"
+                coffeeMove(mail_objs, 200, "x")
+                mail_x = mail_x + 200
+            elif isModule(click.getX(), click.getY(), weather_x, weather_y) == 1:
+                print "WEATHER!"
+                coffeeMove(weather_objs, 200, "x")
+                weather_x = weather_x + 200
+            elif isModule(click.getX(), click.getY(), news_x, news_y) == 1:
+                print "NEWS!"
+                coffeeMove(news_objs, -200, "x")
+                news_x = news_x - 200
+            elif isModule(click.getX(), click.getY(), cal_x, cal_y) == 1:
+                print "EVENTS!"
+                coffeeMove(cal_objs, -200, "x")
+                cal_x = cal_x - 200
+            else:
+                continue
+            instr.undraw()
+            break
 
+    # create continuous loop to make running clock
+    clock_obj.undraw()
+    var = 1
+    while var == 1:
+        obj = clock(win)
+        time.sleep(1)
+        obj.undraw()
     win.close()    # Close window when done
 
 def isModule(x, y, modX, modY):
@@ -79,11 +102,31 @@ def coffeeMove(objects, distance, direction):
         for x in objects:
             x.move(0, distance)
 
+def coffeePlace(win):
+    msg = "Click HERE to place your coffee."
+    t = Text(Point(682, 450), msg)
+    t.setFace('arial')
+    t.setStyle("bold")
+    t.setSize(30)
+    t.setTextColor("green")
+    t.draw(win)
+    return t
+
+def coffeeInstructions(win):
+    msg = "Now, click where you want it."
+    t = Text(Point(682, 450), msg)
+    t.setFace('arial')
+    t.setStyle("bold")
+    t.setSize(30)
+    t.setTextColor("green")
+    t.draw(win)
+    return t
+
 def clock(win):
 
     # displaying time
     time = datetime.datetime.now().time()
-    time_str = time.strftime('%l:%M:%S %p')
+    time_str = time.strftime('%l:%M %p')
     t = Text(Point(668, 50), time_str)
     t.setFace('arial')
     t.setStyle("bold")
