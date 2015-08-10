@@ -35,7 +35,7 @@ def main():
     news_y = 100
     cal_x = 1095
     cal_y = 520
-    
+   
 
     # set up main modules
     mail_objs = mail(win, mail_x, mail_y)
@@ -45,34 +45,33 @@ def main():
     clock_obj = clock(win)
     place_txt = coffeePlace(win)
 
+    right_move_dist = 300
+    left_move_dist = -300
+
     # wait for mouse click to close window
     var = 1
     while var == 1:
         click = win.getMouse()  # Pause to view result
         print click.getX()
         print click.getY()
-        if (click.getX() >= 550 and click.getX() <= 600) and (click.getY() >= 440 and click.getY() <= 480):
+        if (click.getX() >= 550 and click.getX() <= 600) and (click.getY() >= 0 and click.getY() <= 100):
             place_txt.undraw()
             instr = coffeeInstructions(win)
             click = win.getMouse()
             if isModule(click.getX(), click.getY(), mail_x, mail_y) == 1:
-                print "MAIL!"
-                coffeeMove(mail_objs, 300, "x")
-                mail_x = mail_x + 300
+                coffeeMove(mail_objs, right_move_dist, "x")
+                mail_x = mail_x + right_move_dist
             elif isModule(click.getX(), click.getY(), weather_x, weather_y) == 1:
-                print "WEATHER!"
-                coffeeMove(weather_objs, 300, "x")
-                weather_x = weather_x + 300
+                coffeeMove(weather_objs, right_move_dist, "x")
+                weather_x = weather_x + right_move_dist
             elif isModule(click.getX(), click.getY(), news_x, news_y) == 1:
-                print "NEWS!"
-                coffeeMove(news_objs, -300, "x")
-                news_x = news_x - 300
+                coffeeMove(news_objs, left_move_dist, "x")
+                news_x = news_x - left_move_dist
             elif isModule(click.getX(), click.getY(), cal_x, cal_y) == 1:
-                print "EVENTS!"
-                coffeeMove(cal_objs, -300, "x")
-                cal_x = cal_x - 300
+                coffeeMove(cal_objs, left_move_dist, "x")
+                cal_x = cal_x - left_move_dist
             else:
-                continue
+                instr.undraw()
             instr.undraw()
             break
 
@@ -104,7 +103,7 @@ def coffeeMove(objects, distance, direction):
 
 def coffeePlace(win):
     msg = "Click HERE to place your coffee."
-    t = Text(Point(682, 450), msg)
+    t = Text(Point(668, 50), msg)
     t.setFace('arial')
     t.setStyle("bold")
     t.setSize(30)
@@ -114,7 +113,7 @@ def coffeePlace(win):
 
 def coffeeInstructions(win):
     msg = "Now, click where you want it."
-    t = Text(Point(682, 450), msg)
+    t = Text(Point(668, 50), msg)
     t.setFace('arial')
     t.setStyle("bold")
     t.setSize(30)
@@ -127,8 +126,8 @@ def clock(win):
     # displaying time
     time = datetime.datetime.now().time()
     time_str = time.strftime('%l:%M %p')
-    t = Text(Point(668, 50), time_str)
-    t.setFace('arial')
+    t = Text(Point(682, 400), time_str)
+    t.setFace('times roman')
     t.setStyle("bold")
     t.setSize(30)
     t.setTextColor("green")
