@@ -57,20 +57,20 @@ def main():
             click = win.getMouse()
             if isModule(click.getX(), click.getY(), mail_x, mail_y) == 1:
                 print "MAIL!"
-                coffeeMove(mail_objs, 200, "x")
-                mail_x = mail_x + 200
+                coffeeMove(mail_objs, 300, "x")
+                mail_x = mail_x + 300
             elif isModule(click.getX(), click.getY(), weather_x, weather_y) == 1:
                 print "WEATHER!"
-                coffeeMove(weather_objs, 200, "x")
-                weather_x = weather_x + 200
+                coffeeMove(weather_objs, 300, "x")
+                weather_x = weather_x + 300
             elif isModule(click.getX(), click.getY(), news_x, news_y) == 1:
                 print "NEWS!"
-                coffeeMove(news_objs, -200, "x")
-                news_x = news_x - 200
+                coffeeMove(news_objs, -300, "x")
+                news_x = news_x - 300
             elif isModule(click.getX(), click.getY(), cal_x, cal_y) == 1:
                 print "EVENTS!"
-                coffeeMove(cal_objs, -200, "x")
-                cal_x = cal_x - 200
+                coffeeMove(cal_objs, -300, "x")
+                cal_x = cal_x - 300
             else:
                 continue
             instr.undraw()
