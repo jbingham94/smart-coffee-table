@@ -35,18 +35,20 @@ def main():
     news_y = 100
     cal_x = 1095
     cal_y = 520
-   
+    clock_x = 682
+    clock_y = 400
 
     # set up main modules
     mail_objs = mail(win, mail_x, mail_y)
     news_objs = news(win, news_x, news_y)
     cal_objs = calendar(win, cal_x, cal_y)
     weather_objs = weather(win, weather_x, weather_y)
-    clock_obj = clock(win)
+    clock_obj = clock(win, clock_x, clock_y)
     place_txt = coffeePlace(win)
 
     right_move_dist = 300
     left_move_dist = -300
+    up_dist = 200
 
     # wait for mouse click to close window
     var = 1
@@ -59,17 +61,20 @@ def main():
             instr = coffeeInstructions(win)
             click = win.getMouse()
             if isModule(click.getX(), click.getY(), mail_x, mail_y) == 1:
-                coffeeMove(mail_objs, right_move_dist, "x")
+                moduleMove(mail_objs, right_move_dist, "x")
                 mail_x = mail_x + right_move_dist
             elif isModule(click.getX(), click.getY(), weather_x, weather_y) == 1:
-                coffeeMove(weather_objs, right_move_dist, "x")
+                moduleMove(weather_objs, right_move_dist, "x")
                 weather_x = weather_x + right_move_dist
             elif isModule(click.getX(), click.getY(), news_x, news_y) == 1:
-                coffeeMove(news_objs, left_move_dist, "x")
+                moduleMove(news_objs, left_move_dist, "x")
                 news_x = news_x - left_move_dist
             elif isModule(click.getX(), click.getY(), cal_x, cal_y) == 1:
-                coffeeMove(cal_objs, left_move_dist, "x")
+                moduleMove(cal_objs, left_move_dist, "x")
                 cal_x = cal_x - left_move_dist
+            elif isClock(click.getX(), click.getY(), clock_x, clock_y) == 1:
+                clockMove(clock_obj, up_dist, "y")
+                clock_y = clock_y - up_dist
             else:
                 instr.undraw()
             instr.undraw()
@@ -79,7 +84,7 @@ def main():
     clock_obj.undraw()
     var = 1
     while var == 1:
-        obj = clock(win)
+        obj = clock(win, clock_x, clock_y)
         time.sleep(1)
         obj.undraw()
     win.close()    # Close window when done
@@ -93,13 +98,27 @@ def isModule(x, y, modX, modY):
     else:
         return 0
 
-def coffeeMove(objects, distance, direction):
+def isClock(x, y, modX, modY):
+    clock_size = 100
+    if (x >= modX and x <= modX + clock_size) and (y > modY and y <= modY + clock_size):
+        print "yes!"
+        return 1
+    else:
+        return 0
+
+def moduleMove(objects, distance, direction):
     if direction == "x":
         for x in objects:
             x.move(distance, 0)
-    else:
+    elif direction == "y":
         for x in objects:
             x.move(0, distance)
+
+def clockMove(obj, distance, direction):
+    if direction == "x":
+        obj.move(distance, 0)
+    elif direction == "y":
+        obj.move(0, distance)
 
 def coffeePlace(win):
     msg = "Click HERE to place your coffee."
@@ -121,12 +140,12 @@ def coffeeInstructions(win):
     t.draw(win)
     return t
 
-def clock(win):
+def clock(win, x_coord, y_coord):
 
     # displaying time
     time = datetime.datetime.now().time()
     time_str = time.strftime('%l:%M %p')
-    t = Text(Point(682, 400), time_str)
+    t = Text(Point(x_coord, y_coord), time_str)
     t.setFace('times roman')
     t.setStyle("bold")
     t.setSize(30)
