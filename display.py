@@ -34,7 +34,7 @@ def main_stuff(win):
 
     # set up background
     background_image = "./static/space.gif"
-    background(background_image, win)
+    backgd = background(background_image, win)
 
     # widget start points
     mail_x = 300
@@ -92,9 +92,18 @@ def main_stuff(win):
     coffee_placed = 0
     green_drawn = 0
 
+    # begin timer
+    start_time = time.time()
+    shutdown_time = 15 # in seconds
+    
     # coffee cup placement
     var = 1
     while var == 1:
+        # see if we go back to black
+        curr_time = time.time()-start_time
+        if curr_time >= shutdown_time:
+            break
+        # otherwise, continue
         click = win.checkMouse()
         if coffee_placed == 0 and click != None:
             if (click.getX() >= coffee_left and click.getX() <= coffee_right) and (click.getY() >= coffee_top and click.getY() <= coffee_bottom):
@@ -133,11 +142,21 @@ def main_stuff(win):
             continue
         else:
             clock_obj.undraw()
-            obj = clock(win, clock_x, clock_y)
+            clock_obj = clock(win, clock_x, clock_y)
             time.sleep(1)
-            obj.undraw()
-        
-    win.close()    # Close window when done
+            clock_obj.undraw()
+
+    for obj in mail_objs:
+        obj.undraw()
+    for obj in weather_objs:
+        obj.undraw()
+    for obj in cal_objs:
+        obj.undraw()
+    for obj in news_objs:
+        obj.undraw()
+    clock_obj.undraw()
+    coffee_cup.undraw()
+    backgd.undraw()
 
 def drawCoffee(x, y, win):
     coffeeCup = Image(Point(x, y), "./static/coffee-cup.gif")
@@ -237,9 +256,9 @@ def news(win, x_coord, y_coord):
             t.draw(win)
             obj_list.append(t)
             if y == elem - 1:
-                y_coord = y_coord + big_incr
+                y_coord = y_coord + 55
             elif y == elem - 2:
-                y_coord = y_coord + mid_incr
+                y_coord = y_coord + 45
             else:
                 y_coord = y_coord + sm_incr
 
@@ -330,6 +349,7 @@ def weather(win, x_coord, y_coord):
     font = "arial"
     header_sz = 24
     day_sz = 16
+    max_len = 15
     # for header
     header_x = x_coord + 200
     header_y = y_coord - 40
@@ -351,6 +371,10 @@ def weather(win, x_coord, y_coord):
                 temp = u + "F"
                 temp_str = w[x][y] + temp
                 t = Text(Point(x_coord, y_coord),temp_str)
+            elif y == elem-2 and len(w[x][y]) > max_len:
+                weather_str = w[x][y].split(' ',1)[0]
+                t = Text(Point(x_coord, y_coord), weather_str)
+                t.setStyle(style_str)
             else:
                 t = Text(Point(x_coord, y_coord),w[x][y])
                 t.setStyle(style_str)
@@ -396,7 +420,7 @@ def calendar(win, x_coord, y_coord):
     elem = 2
     size = 16
     header_x = x_coord
-    header_y = y_coord - 40
+    header_y = y_coord - 30
     decr = 25
     incr = 80
     no_more_events = 0
@@ -440,7 +464,6 @@ def calendar(win, x_coord, y_coord):
 
     return obj_list
 
-
 def background(img_name, win):
 
     #create a point by specifying the x and y positions
@@ -449,6 +472,7 @@ def background(img_name, win):
     image1 = Image(point1, img_name)
     #make it show up in the window
     image1.draw(win)
+    return image1
 
 
 main()
