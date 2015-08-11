@@ -35,8 +35,10 @@ def main():
     news_y = 100
     cal_x = 1095
     cal_y = 520
-    clock_x = 682
+    clock_x = 700
     clock_y = 333
+    coff_x = 700
+    coff_y = 400
 
     # set up main modules
     mail_objs = mail(win, mail_x, mail_y)
@@ -44,7 +46,7 @@ def main():
     cal_objs = calendar(win, cal_x, cal_y)
     weather_objs = weather(win, weather_x, weather_y)
     clock_obj = clock(win, clock_x, clock_y)
-    place_txt = coffeePlace(win)
+    coffee_cup = drawCoffee(coff_x, coff_y, win)
 
     right_move_dist = 300
     left_move_dist = -300
@@ -55,9 +57,9 @@ def main():
     var = 1
     while var == 1:
         click = win.getMouse()  # check if user clicks on coffee cup message
-        if (click.getX() >= 550 and click.getX() <= 600) and (click.getY() >= 0 and click.getY() <= 100):
-            place_txt.undraw()  # undraw initial message, replace with instruction
-            instr = coffeeInstructions(win)
+        if (click.getX() >= 675 and click.getX() <= 725) and (click.getY() >= 370 and click.getY() <= 435):
+            coffee_cup.undraw()
+            green = drawGreenCoffee(coff_x, coff_y, win)
             click = win.getMouse()  # get new mouse click
             # determine what to move & where
             if isModule(click.getX(), click.getY(), mail_x, mail_y, 200, 350, 1) == 1:
@@ -80,15 +82,9 @@ def main():
                 clockMove(clock_obj, up_dist, "y")
                 clock_y = clock_y - up_dist
             else:
-                instr.undraw()
-            instr.undraw()
+                green.undraw()
+            green.undraw()
             break
-
-    var = 1
-    while var == 1:
-        click = win.getMouse()
-        print click.getX()
-        print click.getY()
         
     # create continuous loop to make running clock
     clock_obj.undraw()
@@ -98,6 +94,16 @@ def main():
         time.sleep(1)
         obj.undraw()
     win.close()    # Close window when done
+
+def drawCoffee(x, y, win):
+    coffeeCup = Image(Point(x, y), "./static/coffee-cup.gif")
+    coffeeCup.draw(win)
+    return coffeeCup
+
+def drawGreenCoffee(x, y, win):
+    coffeeCup = Image(Point(x, y), "./static/coffee-cup-green.gif")
+    coffeeCup.draw(win)
+    return coffeeCup
 
 def isModule(x, y, modX, modY, width, height, centered):
     if centered == 1:
@@ -130,25 +136,6 @@ def clockMove(obj, distance, direction):
         obj.move(distance, 0)
     elif direction == "y":
         obj.move(0, distance)
-
-def coffeePlace(win):
-    msg = "Click HERE to place your coffee."
-    t = Text(Point(668, 50), msg)
-    t.setFace('arial')
-    t.setSize(30)
-    t.setTextColor("green")
-    t.draw(win)
-    return t
-
-def coffeeInstructions(win):
-    msg = "Now, click where you want it."
-    t = Text(Point(668, 50), msg)
-    t.setFace('arial')
-    t.setStyle("bold")
-    t.setSize(30)
-    t.setTextColor("green")
-    t.draw(win)
-    return t
 
 def clock(win, x_coord, y_coord):
 
