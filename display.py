@@ -8,8 +8,6 @@
 # associated with the functionality of the module 
 # smartCoffeeTable.py
 #
-# The main method of this module can be changed and called from the raspberry pi GPIO module
-#
 
 
 from graphics import *
@@ -25,17 +23,20 @@ GPIO.setup(10,GPIO.IN)
 
 def main():
     win = GraphWin("Smart Coffee Display", 1315, 703)
+    win.setBackground("black")
     while True:
 	if ( GPIO.input(10) == False ):
-		main_stuff(win)
+	    main_stuff(win)
 	elif ( GPIO.input(10) == True ):
-		continue
+	    continue
+	
 def main_stuff(win):
 
     # set up background
     background_image = "./static/space.gif"
     background(background_image, win)
 
+    # widget start points
     mail_x = 300
     mail_y = 100
     weather_x = 100
@@ -49,6 +50,30 @@ def main_stuff(win):
     coff_x = 700
     coff_y = 400
 
+    # widget bounds for click detection
+    mail_width = 200
+    mail_height = 350
+    news_width = 200
+    news_height = 410
+    weather_width = 560
+    weather_height = 230
+    cal_width = 200
+    cal_height = 200
+    clock_width = 90
+    clock_height = 13
+
+    # offsets (also for click detection)
+    weather_start_x = 70
+    weather_start_y = 50
+    news_start = 60
+    cal_start = 50
+
+    # boundaries of coffee icon
+    coffee_left = 675
+    coffee_right = 725
+    coffee_top = 370
+    coffee_bottom = 435
+
     # set up main modules
     mail_objs = mail(win, mail_x, mail_y)
     news_objs = news(win, news_x, news_y)
@@ -57,51 +82,61 @@ def main_stuff(win):
     clock_obj = clock(win, clock_x, clock_y)
     coffee_cup = drawCoffee(coff_x, coff_y, win)
 
+    # coffee cup movement standards
     right_move_dist = 300
     left_move_dist = -300
     up_dist = 200
     down_dist = -200
 
+    # booleans for loop
+    coffee_placed = 0
+    green_drawn = 0
+
     # coffee cup placement
     var = 1
     while var == 1:
-        click = win.getMouse()  # check if user clicks on coffee cup message
-        if (click.getX() >= 675 and click.getX() <= 725) and (click.getY() >= 370 and click.getY() <= 435):
-            coffee_cup.undraw()
-            green = drawGreenCoffee(coff_x, coff_y, win)
-            click = win.getMouse()  # get new mouse click
-            # determine what to move & where
-            if isModule(click.getX(), click.getY(), mail_x, mail_y, 200, 350, 1) == 1:
-                moduleMove(mail_objs, right_move_dist, "x")
-                mail_x = mail_x + right_move_dist
-                clockMove(clock_obj, down_dist, "y")
-                clock_y = clock_y - down_dist
-            elif isModule(click.getX(), click.getY(), weather_x - 70, weather_y - 50, 560, 230, 0) == 1:
-                moduleMove(weather_objs, right_move_dist, "x")
-                weather_x = weather_x + right_move_dist
-            elif isModule(click.getX(), click.getY(), news_x, news_y - 60, 200, 410, 1) == 1:
-                moduleMove(news_objs, left_move_dist, "x")
-                news_x = news_x - left_move_dist
-                clockMove(clock_obj, down_dist, "y")
-                clock_y = clock_y - down_dist
-            elif isModule(click.getX(), click.getY(), cal_x, cal_y - 50, 200, 200, 1) == 1:
-                moduleMove(cal_objs, left_move_dist, "x")
-                cal_x = cal_x - left_move_dist
-            elif isClock(click.getX(), click.getY(), clock_x, clock_y) == 1:
-                clockMove(clock_obj, up_dist, "y")
-                clock_y = clock_y - up_dist
-            else:
+        click = win.checkMouse()
+        if coffee_placed == 0 and click != None:
+            if (click.getX() >= coffee_left and click.getX() <= coffee_right) and (click.getY() >= coffee_top and click.getY() <= coffee_bottom):
+                coffee_cup.undraw()
+                green = drawGreenCoffee(coff_x, coff_y, win)
+                green_drawn = 1
+                click = win.getMouse()  # get new mouse click
+                # determine what to move & where
+                if isModule(click.getX(), click.getY(), mail_x, mail_y, mail_width, mail_height, 1) == 1:
+                    moduleMove(mail_objs, right_move_dist, "x")
+                    mail_x = mail_x + right_move_dist
+                    clockMove(clock_obj, down_dist, "y")
+                    clock_y = clock_y - down_dist
+                elif isModule(click.getX(), click.getY(), weather_x - weather_start_x, weather_y - weather_start_y, weather_width, weather_height, 0) == 1:
+                    moduleMove(weather_objs, right_move_dist, "x")
+                    weather_x = weather_x + right_move_dist
+                elif isModule(click.getX(), click.getY(), news_x, news_y - news_start, news_width, news_height, 1) == 1:
+                    moduleMove(news_objs, left_move_dist, "x")
+                    news_x = news_x - left_move_dist
+                    clockMove(clock_obj, down_dist, "y")
+                    clock_y = clock_y - down_dist
+                elif isModule(click.getX(), click.getY(), cal_x, cal_y - cal_start, cal_width, cal_height, 1) == 1:
+                    moduleMove(cal_objs, left_move_dist, "x")
+                    cal_x = cal_x - left_move_dist
+                elif isClock(click.getX(), click.getY(), clock_x, clock_y, clock_width, clock_height) == 1:
+                    clockMove(clock_obj, up_dist, "y")
+                    clock_y = clock_y - up_dist
+                else:
+                    green.undraw()
                 green.undraw()
-            green.undraw()
-            break
+                coffee_placed = 1
+                green_drawn = 0
+            else:
+                continue
+        elif green_drawn == 1:
+            continue
+        else:
+            clock_obj.undraw()
+            obj = clock(win, clock_x, clock_y)
+            time.sleep(1)
+            obj.undraw()
         
-    # create continuous loop to make running clock
-    clock_obj.undraw()
-    var = 1
-    while var == 1:
-        obj = clock(win, clock_x, clock_y)
-        time.sleep(1)
-        obj.undraw()
     win.close()    # Close window when done
 
 def drawCoffee(x, y, win):
@@ -124,10 +159,8 @@ def isModule(x, y, modX, modY, width, height, centered):
     else:
         return 0
 
-def isClock(x, y, modX, modY):
-    clock_size = 100
-    if (x >= modX and x <= modX + clock_size) and (y > modY and y <= modY + clock_size):
-        print "yes!"
+def isClock(x, y, modX, modY, width, height):
+    if (x >= modX - width and x <= modX + width) and (y > modY - height and y <= modY + height):
         return 1
     else:
         return 0
@@ -178,6 +211,7 @@ def news(win, x_coord, y_coord):
     header_x = x_coord
     header_y = y_coord - 50
     header_sz = 24
+    line_lim = 55
     n = getNews(stor_num)
 
     # header stuff
@@ -194,7 +228,7 @@ def news(win, x_coord, y_coord):
 
     for x in range(0, stories ):
         for y in range(0, elem):
-            t = Text(Point(x_coord, y_coord), textwrap.fill(n[x][y], 55))
+            t = Text(Point(x_coord, y_coord), textwrap.fill(n[x][y], line_lim))
             t.setFace(font)
             if y == 0:
                 t.setStyle(effect_str)
@@ -247,8 +281,13 @@ def mail(win, x_coord, y_coord):
     # displaying emails
     for x in range(emails-1, -1, -1):  # grab emails by most recent
         for y in range(0, elem):
-            if y == elem - 1 and len(m[x][y]) > max_body:
-                body_str = m[x][y][0:max_body] + "..."
+            if y == elem - 1 and len(m[x][y]) > max_body: # deals with longer email bodies
+                head_len = 0
+                if "\n" in m[x][y]:
+                    head, sep, tail = m[x][y].partition('\n')
+                    head_len = len(head)
+                body_str = head[0:head_len-1] + "..."
+                print body_str
                 t = Text(Point(x_coord, y_coord), body_str)
             else:
                 t = Text(Point(x_coord, y_coord), m[x][y])

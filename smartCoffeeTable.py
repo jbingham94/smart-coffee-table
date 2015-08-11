@@ -11,6 +11,7 @@ import datetime
 import dateutil.parser as dparser
 import feedparser
 
+# This file contains the data fetching needed for the Smart Coffee Table project.
 try:
     import argparse
     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
@@ -60,7 +61,6 @@ def convertToF(celcius):
 # first entry is weather description, second is high temp
 # NOTE: zipcode input must be a string, i.e. '00000'
 def getWeather(zipcode):
-    # pp = pprint.PrettyPrinter(indent=4)
     weatherMatrix = [[0 for x in range(2)] for x in range(5)]
     weather_com_result = pywapi.get_weather_from_weather_com(zipcode)
     # today first
@@ -72,6 +72,7 @@ def getWeather(zipcode):
         weatherMatrix[x][1] = convertToF((weather_com_result['forecasts'][x]['high']))
     return weatherMatrix
 
+"""***NOTE*** this is adapted from Google's Calendar API Sample Code."""
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
 APPLICATION_NAME = 'Google Calendar API Quickstart'
@@ -107,11 +108,7 @@ def get_credentials():
 # first entry is time, second is event title
 def getCalendar(eventNum):
 
-    """Shows basic usage of the Google Calendar API.
-
-    Creates a Google Calendar API service object and outputs a list of the next
-    10 events on the user's calendar.
-    """
+    """***NOTE*** this is adapted from Google's Calendar API Sample Code."""
 
     calMatrix = [[0 for x in range(2)] for x in range(eventNum)]
     credentials = get_credentials()
