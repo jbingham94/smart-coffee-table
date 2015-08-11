@@ -17,11 +17,20 @@ from smartCoffeeTable import *
 import datetime
 import time
 import textwrap
+import os
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(10,GPIO.IN)
 
 def main():
-
-    # make window
     win = GraphWin("Smart Coffee Display", 1315, 703)
+    while True:
+	if ( GPIO.input(10) == False ):
+		main_stuff(win)
+	elif ( GPIO.input(10) == True ):
+		continue
+def main_stuff(win):
 
     # set up background
     background_image = "./static/space.gif"
@@ -216,6 +225,7 @@ def mail(win, x_coord, y_coord):
     header_x = x_coord
     header_y = y_coord - 50
     header_size = 24
+    max_body = 55
     sm_incr = 15
     mid_incr = 20
     big_incr = 50
@@ -237,7 +247,11 @@ def mail(win, x_coord, y_coord):
     # displaying emails
     for x in range(emails-1, -1, -1):  # grab emails by most recent
         for y in range(0, elem):
-            t = Text(Point(x_coord, y_coord), m[x][y])
+            if y == elem - 1 and len(m[x][y]) > max_body:
+                body_str = m[x][y][0:max_body] + "..."
+                t = Text(Point(x_coord, y_coord), body_str)
+            else:
+                t = Text(Point(x_coord, y_coord), m[x][y])
             t.setFace(font)
             t.setSize(font_sz)
             t.setTextColor(color_str)
