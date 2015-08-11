@@ -21,22 +21,22 @@ import textwrap
 def main():
 
     # make window
-    win = GraphWin("Smart Coffee Display", 1365, 900)
+    win = GraphWin("Smart Coffee Display", 1315, 703)
 
     # set up background
     background_image = "./static/space.gif"
     background(background_image, win)
 
-    mail_x = 270
+    mail_x = 300
     mail_y = 100
-    weather_x = 170
-    weather_y = 500
+    weather_x = 100
+    weather_y = 520
     news_x = 1095
     news_y = 100
     cal_x = 1095
     cal_y = 520
     clock_x = 682
-    clock_y = 400
+    clock_y = 333
 
     # set up main modules
     mail_objs = mail(win, mail_x, mail_y)
@@ -49,6 +49,7 @@ def main():
     right_move_dist = 300
     left_move_dist = -300
     up_dist = 200
+    down_dist = -200
 
     # coffee cup placement
     var = 1
@@ -59,16 +60,20 @@ def main():
             instr = coffeeInstructions(win)
             click = win.getMouse()  # get new mouse click
             # determine what to move & where
-            if isModule(click.getX(), click.getY(), mail_x, mail_y) == 1:
+            if isModule(click.getX(), click.getY(), mail_x, mail_y, 200, 350, 1) == 1:
                 moduleMove(mail_objs, right_move_dist, "x")
                 mail_x = mail_x + right_move_dist
-            elif isModule(click.getX(), click.getY(), weather_x, weather_y) == 1:
+                clockMove(clock_obj, down_dist, "y")
+                clock_y = clock_y - down_dist
+            elif isModule(click.getX(), click.getY(), weather_x - 70, weather_y - 50, 560, 230, 0) == 1:
                 moduleMove(weather_objs, right_move_dist, "x")
                 weather_x = weather_x + right_move_dist
-            elif isModule(click.getX(), click.getY(), news_x, news_y) == 1:
+            elif isModule(click.getX(), click.getY(), news_x, news_y - 60, 200, 410, 1) == 1:
                 moduleMove(news_objs, left_move_dist, "x")
                 news_x = news_x - left_move_dist
-            elif isModule(click.getX(), click.getY(), cal_x, cal_y) == 1:
+                clockMove(clock_obj, down_dist, "y")
+                clock_y = clock_y - down_dist
+            elif isModule(click.getX(), click.getY(), cal_x, cal_y - 50, 200, 200, 1) == 1:
                 moduleMove(cal_objs, left_move_dist, "x")
                 cal_x = cal_x - left_move_dist
             elif isClock(click.getX(), click.getY(), clock_x, clock_y) == 1:
@@ -79,6 +84,12 @@ def main():
             instr.undraw()
             break
 
+    var = 1
+    while var == 1:
+        click = win.getMouse()
+        print click.getX()
+        print click.getY()
+        
     # create continuous loop to make running clock
     clock_obj.undraw()
     var = 1
@@ -88,12 +99,13 @@ def main():
         obj.undraw()
     win.close()    # Close window when done
 
-def isModule(x, y, modX, modY):
-    # generic module size
-    x_size = 200
-    y_size = 270
-    if (x >= modX and x <= modX + x_size) and (y > modY and y <= modY + y_size):
-        return 1
+def isModule(x, y, modX, modY, width, height, centered):
+    if centered == 1:
+        if (x >= modX - width and x <= modX + width) and (y >= modY and y <= modY + height):
+            return 1
+    elif centered == 0:
+        if (x >= modX and x <= modX + width) and (y >= modY and y <= modY + height):
+            return 1
     else:
         return 0
 
@@ -145,7 +157,6 @@ def clock(win, x_coord, y_coord):
     time_str = time.strftime('%l:%M %p')
     t = Text(Point(x_coord, y_coord), time_str)
     t.setFace('times roman')
-    t.setStyle("bold")
     t.setSize(30)
     t.setTextColor("green")
     t.draw(win)
@@ -163,9 +174,9 @@ def news(win, x_coord, y_coord):
     header_str = "NEWS"
     stor_num = 5
     size = 11
-    sm_incr = 20
-    mid_incr = 30
-    big_incr = 40
+    sm_incr = 30
+    mid_incr = 40
+    big_incr = 50
     stories = 3
     elem = 3
     header_x = x_coord
@@ -185,12 +196,9 @@ def news(win, x_coord, y_coord):
 
     # stories
 
-    for x in range(0, stories):
+    for x in range(0, stories ):
         for y in range(0, elem):
-            if y == elem-1:
-                t = Text(Point(x_coord, y_coord), textwrap.fill(n[x][y], 80))
-            else:
-                t = Text(Point(x_coord, y_coord), n[x][y])
+            t = Text(Point(x_coord, y_coord), textwrap.fill(n[x][y], 55))
             t.setFace(font)
             if y == 0:
                 t.setStyle(effect_str)
@@ -221,9 +229,9 @@ def mail(win, x_coord, y_coord):
     header_x = x_coord
     header_y = y_coord - 50
     header_size = 24
-    sm_incr = 20
-    mid_incr = 33
-    big_incr = 35
+    sm_incr = 15
+    mid_incr = 20
+    big_incr = 50
     font_sz = 14
     elem = 4
     subj_slot = 2
@@ -240,7 +248,7 @@ def mail(win, x_coord, y_coord):
     obj_list.append(t)
 
     # displaying emails
-    for x in range(emails - 1, 0, -1):  # grab emails by most recent
+    for x in range(emails-1, -1, -1):  # grab emails by most recent
         for y in range(0, elem):
             t = Text(Point(x_coord, y_coord), m[x][y])
             t.setFace(font)
@@ -253,9 +261,9 @@ def mail(win, x_coord, y_coord):
             if y == elem-2:  # second to last element in email
                 y_coord = y_coord + big_incr
             elif y == elem-1:  # last element in email
-                y_coord = y_coord + mid_incr
+                y_coord = y_coord
             else:
-                y_coord = y_coord + sm_incr
+                y_coord = y_coord + mid_incr
 
     return obj_list
 
@@ -271,10 +279,10 @@ def weather(win, x_coord, y_coord):
     size = 20
     start_x_coord = x_coord
     start_y_coord = y_coord
-    bottom_x_coord = 270
-    x_inc = 200
+    bottom_x_coord = x_coord + 100
+    x_inc = 190
     y_inc = 30
-    newline_y_inc = 100
+    newline_y_inc = 90
     days = 5
     elem = 2
     w = getWeather(zipcode)
@@ -283,8 +291,8 @@ def weather(win, x_coord, y_coord):
     header_sz = 24
     day_sz = 16
     # for header
-    header_x = 270
-    header_y = 450
+    header_x = x_coord + 200
+    header_y = y_coord - 40
 
     # header setup
     point = Point(header_x, header_y)
@@ -298,9 +306,15 @@ def weather(win, x_coord, y_coord):
 
     for x in range(0, days):
         for y in range(0, elem):
-            t = Text(Point(x_coord, y_coord), w[x][y])
+            if y == elem-1: # adding degrees signs
+                u = u"\N{DEGREE SIGN}" 
+                temp = u + "F"
+                temp_str = w[x][y] + temp
+                t = Text(Point(x_coord, y_coord),temp_str)
+            else:
+                t = Text(Point(x_coord, y_coord),w[x][y])
+                t.setStyle(style_str)
             t.setFace(font)
-            t.setStyle(style_str)
             t.setSize(size)
             t.setTextColor(color_str)
             t.draw(win)
@@ -322,10 +336,7 @@ def weather(win, x_coord, y_coord):
                 y_coord = y_coord - y_inc * 2
             else:
                 y_coord = y_coord + y_inc
-            if x == 1 and y == 1:  # after 2 days
-                x_coord = start_x_coord
-                y_coord = y_coord + newline_y_inc
-            if x == 3 and y == 1:  # last day goes in middle on bottom
+            if x == 2 and y == 1:  # after 3 days
                 x_coord = bottom_x_coord
                 y_coord = y_coord + newline_y_inc
 
@@ -341,13 +352,13 @@ def calendar(win, x_coord, y_coord):
     color_str = "white"
     header_color_str = "yellow"
     header_str = "EVENTS"
-    events = 2
+    events = 3
     elem = 2
-    size = 20
+    size = 16
     header_x = x_coord
-    header_y = y_coord - 70
+    header_y = y_coord - 40
     decr = 25
-    incr = 90
+    incr = 80
     no_more_events = 0
     header_sz = 24
     c = getCalendar(events)
@@ -368,13 +379,16 @@ def calendar(win, x_coord, y_coord):
     for x in range(0, events):
         if no_more_events == 1:
             break
+        if x == 0:
+            y_coord = y_coord + 30
         for y in range(0, elem):
             if c[x][y] == 0:
                 no_more_events = 1
                 break
             t = Text(Point(x_coord, y_coord), c[x][y])
             t.setFace(font)
-            t.setStyle(style_str)
+            if y == 1:
+                t.setStyle(style_str)
             t.setSize(size)
             t.setTextColor(color_str)
             t.draw(win)
