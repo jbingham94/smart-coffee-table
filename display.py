@@ -50,16 +50,15 @@ def main():
     left_move_dist = -300
     up_dist = 200
 
-    # wait for mouse click to close window
+    # coffee cup placement
     var = 1
     while var == 1:
-        click = win.getMouse()  # Pause to view result
-        print click.getX()
-        print click.getY()
+        click = win.getMouse()  # check if user clicks on coffee cup message
         if (click.getX() >= 550 and click.getX() <= 600) and (click.getY() >= 0 and click.getY() <= 100):
-            place_txt.undraw()
+            place_txt.undraw()  # undraw initial message, replace with instruction
             instr = coffeeInstructions(win)
-            click = win.getMouse()
+            click = win.getMouse()  # get new mouse click
+            # determine what to move & where
             if isModule(click.getX(), click.getY(), mail_x, mail_y) == 1:
                 moduleMove(mail_objs, right_move_dist, "x")
                 mail_x = mail_x + right_move_dist
@@ -124,7 +123,6 @@ def coffeePlace(win):
     msg = "Click HERE to place your coffee."
     t = Text(Point(668, 50), msg)
     t.setFace('arial')
-    t.setStyle("bold")
     t.setSize(30)
     t.setTextColor("green")
     t.draw(win)
