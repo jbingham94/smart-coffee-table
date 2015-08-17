@@ -41,3 +41,7 @@ How to set up the Google Weather API:
     Navigate to the folder in Terminal and run the following lines:
     $ python setup.py build
     $ python setup.py install
+
+If there is an import error with dateutil:
+   Run the following line on terminal (with pip installed):
+   $ sudo pip install numpy python-dateutil pytz pyparsing six --force-reinstall --upgrade 

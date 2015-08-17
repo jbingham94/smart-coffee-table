@@ -5,6 +5,8 @@ README file for Jasper Bingham and Chris Livngston's
 General Description:
 
 	The smart coffee table is your personal dashboard for getting in touch with frequently used personal applications in an easy-to-use, beverage-friendly table interface. Users can read email, news, weather reports, and time from a centralized location and supplement watching the morning news and coffee with other useful imformation that can better prepare him or her for the day ahead.
+	NOTE: Due to the requirements of our class (RIOTS: Risks of the Internet of Things to Society), we had to utilize a push-button sensor connected via a breadboard to a Raspberry Pi to activate the display.  The code will not work without this type of setup, but the code relating to the button is in the main function of display.py and should be fairly easy to modify.  To run the project, just run display.py.
+	NOTE 2: We designed the graphics to fit very precisely on the monitor which we used for the project - it will not look as-intended on a different screen.
 
 Directory Structure:
 
